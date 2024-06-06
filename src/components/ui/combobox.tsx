@@ -18,15 +18,20 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
-interface ComboboxProps {
-    options: { label: string; value: string }[];
+interface ComboBoxProps {
+    options: { label: string; value: string; }[];
     value?: string;
     onChange: (value: string) => void;
 }
 
-export const Combobox = ({ options, value, onChange }: ComboboxProps) => {
+export const Combobox = ({
+    options,
+    value,
+    onChange,
+}: ComboBoxProps) => {
+    console.log("Combobox", options);
+
     const [open, setOpen] = React.useState(false)
-    console.log(options);
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -35,7 +40,7 @@ export const Combobox = ({ options, value, onChange }: ComboboxProps) => {
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-[200px] justify-between"
+                    className="w-full justify-between"
                 >
                     {value
                         ? options.find((option) => option.value === value)?.label
@@ -43,16 +48,15 @@ export const Combobox = ({ options, value, onChange }: ComboboxProps) => {
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[200px] p-0">
+            <PopoverContent className="w-full p-0">
                 <Command>
-                    <CommandInput placeholder="Search options..." />
-                    <CommandEmpty>No Option found.</CommandEmpty>
+                    <CommandInput placeholder="Search option..." />
+                    <CommandEmpty>No option found.</CommandEmpty>
                     <CommandGroup>
                         {options.map((option) => (
                             <CommandItem
                                 key={option.value}
-                                value={option.value}
-                                onSelect={() => {
+                                onSelect={(currentValue) => {
                                     onChange(option.value === value ? "" : option.value)
                                     setOpen(false)
                                 }}
